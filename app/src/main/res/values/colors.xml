@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="bg_linen">#F5F1EA</color>    <color name="color_khaki">#D7C9B8</color> <color name="color_camel">#B2967D</color> <color name="color_cocoa">#7D5A44</color> <color name="color_espresso">#4A342A</color> <color name="white">#FFFFFF</color>
+    <color name="gray_hint">#9E9E9E</color>
+    <color name="border_gray">#E0E0E0</color>
 </resources>
