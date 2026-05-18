@@ -3,21 +3,22 @@ package org.sorasakistans.moviles_proyectofinal_biblioteca;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+    private MaterialButton btnSignIn, btnCreateAccount;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) { // ¡Dejado en su nombre real!
         super.onCreate(savedInstanceState);
-        // Vincula con tu archivo activity_welcome.xml
         setContentView(R.layout.activity_welcome);
 
-        MaterialButton btnSignIn = findViewById(R.id.btnSignIn);
-        MaterialButton btnCreateAccount = findViewById(R.id.btnCreateAccount);
+        btnSignIn = findViewById(R.id.btnSignIn);
+        btnCreateAccount = findViewById(R.id.btnCreateAccount);
 
-        // Clic en SIGN IN -> Va a LoginActivity
+        // Acción al presionar "SIGN IN" -> Nos lleva al Login
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Clic en CREATE ACCOUNT -> Va a AccountActivity
+        // Acción al presionar "CREATE ACCOUNT" -> Nos lleva al Registro
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
