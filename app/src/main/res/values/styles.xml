@@ -1,0 +1,3 @@
+<style name="RoundedImageView">
+    <item name="cornerSize">8dp</item>
+</style>
