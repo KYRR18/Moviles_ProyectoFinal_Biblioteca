@@ -33,8 +33,11 @@ public class ModificarLibroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.modificar_libro);
         super.onCreate(savedInstanceState);
-        //recuperar datos o algo asi
 
+        // Recuperar el ISBN enviado desde el adaptador
+        if (getIntent() != null && getIntent().hasExtra("isbn")) {
+            isbnpasado = getIntent().getStringExtra("isbn");
+        }
 
         back = findViewById(R.id.btnBack);
         trash = findViewById(R.id.btnDeleteBook);
@@ -65,7 +68,12 @@ public class ModificarLibroActivity extends AppCompatActivity {
             }
         });
 
-        recuperarLibro(isbnpasado);
+        if (isbnpasado != null) {
+            recuperarLibro(isbnpasado);
+        }else{
+            //KEVIN TOAST HERE
+            finish();
+        }
     }
     public void recuperarLibro(String isbnBuscado){
         String url = "http://10.0.2.2/api_biblioteca/api/buscar_libros.php";
@@ -112,7 +120,7 @@ public class ModificarLibroActivity extends AppCompatActivity {
         String aut = autor.getText().toString();
         String editorial = editor.getText().toString();
         String error = "";
-        if (isb.isEmpty()){error+="ISBN vaci\n";}
+        if (isb.isEmpty()){error+="ISBN vacio\n";}
         if (titulo.isEmpty()){error+="Titulo vacio\n";}
         if (aut.isEmpty()){error+="Autor vacio\n";}
         if (editorial.isEmpty()){error+="Editorial vacio\n";}
@@ -158,7 +166,7 @@ public class ModificarLibroActivity extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
     }
     public void eliminarLibro(String isbn){
-        String url = "http://10.0.2.2/api_biblioteca/api/eliminar_libro.php";//VM RECUERDA VM ONLY
+        String url = "http://10.0.2.2/api_biblioteca/api/eliminar_libro.php";
         // 1. Crear el objeto JSON que enviaremos
         JSONObject jsonBody = new JSONObject();
         try {jsonBody.put("isbn", isbn);
@@ -181,7 +189,6 @@ public class ModificarLibroActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                // Manejar error de red o servidor (400, 500, etc.)
                 error.printStackTrace();
             }
         });
