@@ -2,23 +2,34 @@ package org.sorasakistans.moviles_proyectofinal_biblioteca;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class BuscarActivity extends AppCompatActivity {
+    ArrayList<Libro> listalibros = new ArrayList<>();
+    RecyclerView rv;
+    //EditText searchbar;
+    BusquedaAdapter ad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +82,42 @@ public class BuscarActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+        setContentView(R.layout.buscar_libro);
+
+        //searchbar = findViewById(R.id.etBuscar);
+        rv = findViewById(R.id.rvResultadosBusqueda);
+
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        ad = new BusquedaAdapter(listalibros);
+        rv.setAdapter(ad);
+
+        // Listener para cambios de texto en tiempo real
+        etBuscar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Llamamos a la función de búsqueda con el texto actual
+                buscarLibroPorTitulo(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
     public void buscarLibroPorTitulo(String tituloBuscado) {
         String url = "http://10.0.2.2/api_biblioteca/api/buscar_libros.php";
-        // 1. Creamos el JSON con el título que queremos buscar
+
+        // Limpiamos la lista para mostrar solo los nuevos resultados
+        listalibros.clear();
+
+        if (tituloBuscado.trim().isEmpty()) {
+            ad.notifyDataSetChanged();
+            return;
+        }
+
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("titulo", tituloBuscado);
@@ -94,19 +136,17 @@ public class BuscarActivity extends AppCompatActivity {
                             // Un JSON con un arreglo llamado "libros"
                             JSONArray jsonArray = response.getJSONArray("libros");
 
-                            if(jsonArray.length() == 0) {
-                                // No se encontró ningún libro con ese nombre
-                                return;
-                            }
-                            // Recorremos los resultados
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject libroJson = jsonArray.getJSONObject(i);
                                 String isbn = libroJson.getString("isbn");
                                 String titulo = libroJson.getString("titulo");
                                 String autor = libroJson.getString("autor");
                                 String editorial = libroJson.getString("editorial");
-                                // Aquí agregas el libro a tu lista y actualizas tu RecyclerView
+                                Libro nuevoLibro = new Libro(titulo, autor, editorial, isbn);
+                                listalibros.add(nuevoLibro);
                             }
+                            // Importante: notificar al adaptador que los datos han cambiado
+                            ad.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

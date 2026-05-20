@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -20,12 +23,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ListasActivity extends AppCompatActivity {
+    RecyclerView rv;
     ArrayList<Libro> listaLibros = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        rv = findViewById(R.id.rvFiles);
+        rv.setLayoutManager(new GridLayoutManager(this, 1));
+        obtenerLibros();
+        ListaAdapter ad = new ListaAdapter(listaLibros);
+        rv.setAdapter(ad);
     }
-
     public void obtenerLibros() {
         String url = "http://10.0.2.2/api_biblioteca/api/obtener_libros.php";
         // Creamos la petición GET. Como es GET, no enviamos cuerpo (pasamos null).
