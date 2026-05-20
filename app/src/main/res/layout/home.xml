@@ -158,9 +158,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"> <ImageView android:id="@+id/navHome" android:layout_width="34dp" android:layout_height="34dp" android:layout_marginHorizontal="24dp" android:src="@drawable/home" app:tint="#F5F1EA"/>
-        <ImageView android:id="@+id/navLista" android:layout_width="34dp" android:layout_height="34dp" android:layout_marginHorizontal="24dp" android:src="@drawable/lista" app:tint="#F5F1EA"/>
-        <ImageView android:id="@+id/navLupa" android:layout_width="34dp" android:layout_height="34dp" android:layout_marginHorizontal="24dp" android:src="@drawable/lupa" app:tint="#F5F1EA"/>
-        <ImageView android:id="@+id/navPerfil" android:layout_width="34dp" android:layout_height="34dp" android:layout_marginHorizontal="24dp" android:src="@drawable/perfil" app:tint="#F5F1EA"/>
+        <ImageView android:id="@+id/navLista" android:layout_width="34dp" android:layout_height="34dp" android:layout_marginHorizontal="24dp" android:src="@drawable/lista" app:tint="#D7C9B8"/>
+        <ImageView android:id="@+id/navLupa" android:layout_width="34dp" android:layout_height="34dp" android:layout_marginHorizontal="24dp" android:src="@drawable/lupa" app:tint="#D7C9B8"/>
+        <ImageView android:id="@+id/navPerfil" android:layout_width="34dp" android:layout_height="34dp" android:layout_marginHorizontal="24dp" android:src="@drawable/perfil" app:tint="#D7C9B8"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
