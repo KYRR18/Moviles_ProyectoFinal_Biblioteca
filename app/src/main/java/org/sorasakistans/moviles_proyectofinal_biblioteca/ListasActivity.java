@@ -17,58 +17,57 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class BuscarActivity extends AppCompatActivity {
+import java.util.ArrayList;
 
+public class ListasActivity extends AppCompatActivity {
+    ArrayList<Libro> listaLibros = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    public void buscarLibroPorTitulo(String tituloBuscado) {
-        String url = "http://10.0.2.2/api_biblioteca/api/buscar_libros.php";
-        // 1. Creamos el JSON con el título que queremos buscar
-        JSONObject jsonBody = new JSONObject();
-        try {
-            jsonBody.put("titulo", tituloBuscado);
-            // NOTA: Si prefieres buscar por ISBN, cambia la línea de arriba por:
-            // jsonBody.put("isbn", isbnBuscado);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        // 2. Usamos JsonObjectRequest con método POST
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+    public void obtenerLibros() {
+        String url = "http://10.0.2.2/api_biblioteca/api/obtener_libros.php";
+        // Creamos la petición GET. Como es GET, no enviamos cuerpo (pasamos null).
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        // ¡AQUÍ ES DONDE LLEGA EL JSON!
+                        // La variable 'response' contiene exactamente lo que devolvió PHP.
                         try {
-                            // El PHP nos devuelve el mismo formato que obtener_libros.php
-                            // Un JSON con un arreglo llamado "libros"
+                            // Extraemos el arreglo llamado "libros" del JSON de respuesta
                             JSONArray jsonArray = response.getJSONArray("libros");
-
-                            if(jsonArray.length() == 0) {
-                                // No se encontró ningún libro con ese nombre
-                                return;
-                            }
-                            // Recorremos los resultados
+                            // Limpiamos nuestra lista local antes de agregar los nuevos
+                                listaLibros.clear();
+                            // Recorremos el arreglo de libros uno por uno
                             for (int i = 0; i < jsonArray.length(); i++) {
+                                // Obtenemos el libro actual de la posición 'i'
                                 JSONObject libroJson = jsonArray.getJSONObject(i);
+                                // Extraemos cada campo
                                 String isbn = libroJson.getString("isbn");
                                 String titulo = libroJson.getString("titulo");
                                 String autor = libroJson.getString("autor");
                                 String editorial = libroJson.getString("editorial");
-                                // Aquí agregas el libro a tu lista y actualizas tu RecyclerView
+                                // Creamos nuestro objeto Java y lo añadimos a nuestra lista
+                                Libro nuevoLibro = new Libro(titulo, autor, editorial, isbn);
+                                listaLibros.add(nuevoLibro);
                             }
+                            // Al terminar de cargar, avisamos a nuestro RecyclerView/ListView que se actualice
+                            // miAdapter.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            // Hubo un error procesando el JSON
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                // Este método se ejecuta si no hay internet o si el servidor está apagado/da error.
                 error.printStackTrace();
             }
         });
-        // 3. Lo añadimos a la cola de Volley
+        // Finalmente, añadimos la petición a la cola para que se ejecute
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
     }

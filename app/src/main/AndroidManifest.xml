@@ -2,10 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://tools.android.com/tools"
     xmlns:tools1="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -14,7 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Moviles_ProyectoFinal_Biblioteca"
+        android:usesCleartextTraffic="true"
         tools:targetApi="35">
+        <activity
+            android:name=".ListasActivity"
+            android:exported="false" />
         <activity
             android:name=".PerfilActivity"
             android:exported="false" />

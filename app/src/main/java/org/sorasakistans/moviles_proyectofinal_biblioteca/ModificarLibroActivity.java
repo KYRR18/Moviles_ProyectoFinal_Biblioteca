@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -18,6 +19,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,10 +28,14 @@ public class ModificarLibroActivity extends AppCompatActivity {
     TextInputEditText title,autor,editor,isbn;
     MaterialButton cancel,ok;
     ImageView ivList, ivHome, ivSearch, ivUser;
+    String isbnpasado;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.modificar_libro);
         super.onCreate(savedInstanceState);
+        //recuperar datos o algo asi
+
+
         back = findViewById(R.id.btnBack);
         trash = findViewById(R.id.btnDeleteBook);
         options = findViewById(R.id.btnMoreOptions);
@@ -58,7 +64,48 @@ public class ModificarLibroActivity extends AppCompatActivity {
                 verificarData(view);
             }
         });
+
+        recuperarLibro(isbnpasado);
     }
+    public void recuperarLibro(String isbnBuscado){
+        String url = "http://10.0.2.2/api_biblioteca/api/buscar_libros.php";
+        // 1. Creamos el JSON con el título que queremos buscar
+        JSONObject jsonBody = new JSONObject();
+        try {jsonBody.put("isbn", isbnBuscado);
+        } catch (JSONException e) {e.printStackTrace();}
+        // 2. Usamos JsonObjectRequest con método POST
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            // Un JSON con un arreglo llamado "libros"
+                            JSONArray jsonArray = response.getJSONArray("libros");
+
+                            if(jsonArray.length() == 0) {
+                                // No se encontró ningún libro con ese nombre
+                                return;
+                            }
+                            //Solo buscamos uno agarraremos al primero
+                                JSONObject libroJson = jsonArray.getJSONObject(0);
+                                String is = libroJson.getString("isbn");
+                                String titulo = libroJson.getString("titulo");
+                                String au = libroJson.getString("autor");
+                                String edi = libroJson.getString("editorial");
+                                isbn.setText(is);
+                                title.setText(titulo);
+                                autor.setText(au);
+                                editor.setText(edi);
+                        } catch (JSONException e) {e.printStackTrace();}
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {error.printStackTrace();}});
+        // 3. Lo añadimos a la cola de Volley
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonObjectRequest);
+    }
+
     public void verificarData(View view){
         String isb = isbn.getText().toString();
         String titulo =title.getText().toString();
@@ -85,7 +132,39 @@ public class ModificarLibroActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         // 2. Crear la petición
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, jsonBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            boolean exito = response.getBoolean("exito");
+                            String mensaje = response.getString("mensaje");
+                            // Mostrar mensaje al usuario (ej. Toast)
+                            //Toast tosty = new Toast(v.getContext());
+                            //tosty.
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Manejar error de red o servidor (400, 500, etc.)
+                error.printStackTrace();
+            }
+        });
+        // 3. Añadir la petición a la cola de Volley
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonObjectRequest);
+    }
+    public void eliminarLibro(String isbn){
+        String url = "http://10.0.2.2/api_biblioteca/api/eliminar_libro.php";//VM RECUERDA VM ONLY
+        // 1. Crear el objeto JSON que enviaremos
+        JSONObject jsonBody = new JSONObject();
+        try {jsonBody.put("isbn", isbn);
+        } catch (JSONException e) {e.printStackTrace();}
+        // 2. Crear la petición
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE, url, jsonBody,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
