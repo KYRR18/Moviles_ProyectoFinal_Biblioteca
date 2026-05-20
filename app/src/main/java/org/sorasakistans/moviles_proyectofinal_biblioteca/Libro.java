@@ -13,4 +13,16 @@ public class Libro {
         this.editorial = e;
         this.isbn = i;
     }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
 }
