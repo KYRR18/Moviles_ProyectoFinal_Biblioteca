@@ -141,7 +141,7 @@
                 android:background="@drawable/bg_button_rounded"
                 android:text="Sign Up"
                 android:textAllCaps="false"
-                android:textColor="@color/color_espresso"
+                android:textColor="@color/espresso"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/passwordContainer" />

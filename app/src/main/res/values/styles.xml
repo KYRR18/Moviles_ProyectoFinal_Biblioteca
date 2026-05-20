@@ -1,3 +1,6 @@
-<style name="RoundedImageView">
-    <item name="cornerSize">8dp</item>
-</style>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="RoundedImageView" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerSize">8dp</item>
+    </style>
+</resources>

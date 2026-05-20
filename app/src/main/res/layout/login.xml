@@ -113,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:text="Remember Me"
                 android:textColor="@android:color/white"
-                android:buttonTint="@color/color_khaki"
+                android:buttonTint="@color/khaki"
                 android:layout_marginTop="14dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/passwordContainer" />
@@ -123,7 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Forgot Password"
-                android:textColor="@color/color_khaki"
+                android:textColor="@color/khaki"
                 android:textStyle="bold"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@id/cbRemember"
@@ -138,7 +138,7 @@
                 android:background="@drawable/bg_button_rounded"
                 android:text="Login"
                 android:textAllCaps="false"
-                android:textColor="@color/color_espresso"
+                android:textColor="@color/espresso"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/cbRemember" />
