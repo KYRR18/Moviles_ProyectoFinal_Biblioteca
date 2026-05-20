@@ -70,7 +70,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 Toast.makeText(LoginActivity.this, "¡Validación exitosa! Entrando...", Toast.LENGTH_SHORT).show();
-                // Aquí irá el Intent a tu HomeActivity cuando esté lista
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 

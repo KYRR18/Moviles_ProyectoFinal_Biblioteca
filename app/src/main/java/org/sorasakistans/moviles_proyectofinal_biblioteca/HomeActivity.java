@@ -34,7 +34,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // 2. Viajar a la pantalla de Listas
         navLista.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, ListaAdapter.class); // Verifica si se llama ListasActivity o ListaActivity
+            Intent intent = new Intent(HomeActivity.this, ListasActivity.class); // Verifica si se llama ListasActivity o ListaActivity
             startActivity(intent);
             finish(); // Cierra Home para liberar espacio en memoria
         });

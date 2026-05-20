@@ -28,6 +28,7 @@ public class ListasActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.listas);
         rv = findViewById(R.id.rvFiles);
         rv.setLayoutManager(new GridLayoutManager(this, 1));
         obtenerLibros();
