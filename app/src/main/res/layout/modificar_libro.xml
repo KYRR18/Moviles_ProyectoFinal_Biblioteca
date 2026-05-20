@@ -142,7 +142,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#4A342A"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:focusable="false"
+                    android:cursorVisible="false"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
@@ -190,10 +193,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView android:layout_width="34dp" android:layout_height="34dp" android:layout_marginHorizontal="24dp" android:src="@drawable/home" app:tint="#F5F1EA"/>
-        <ImageView android:layout_width="34dp" android:layout_height="34dp" android:layout_marginHorizontal="24dp" android:src="@drawable/lista" app:tint="#F5F1EA"/>
-        <ImageView android:layout_width="34dp" android:layout_height="34dp" android:layout_marginHorizontal="24dp" android:src="@drawable/lupa" app:tint="#F5F1EA"/>
-        <ImageView android:layout_width="34dp" android:layout_height="34dp" android:layout_marginHorizontal="24dp" android:src="@drawable/perfil" app:tint="#F5F1EA"/>
+        <ImageView
+            android:id="@+id/iv_homeMod"
+            android:layout_width="34dp" android:layout_height="34dp" android:layout_marginHorizontal="24dp" android:src="@drawable/home" app:tint="#F5F1EA"/>
+        <ImageView android:id="@+id/iv_listMod" android:layout_width="34dp" android:layout_height="34dp" android:layout_marginHorizontal="24dp" android:src="@drawable/lista" app:tint="#F5F1EA"/>
+        <ImageView android:id="@+id/iv_searchMod" android:layout_width="34dp" android:layout_height="34dp" android:layout_marginHorizontal="24dp" android:src="@drawable/lupa" app:tint="#F5F1EA"/>
+        <ImageView android:id="@+id/iv_userMod" android:layout_width="34dp" android:layout_height="34dp" android:layout_marginHorizontal="24dp" android:src="@drawable/perfil" app:tint="#F5F1EA"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
