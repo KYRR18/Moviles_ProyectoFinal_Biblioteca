@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +34,6 @@ public class ModificarLibroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.modificar_libro);
         super.onCreate(savedInstanceState);
-
         // Recuperar el ISBN enviado desde el adaptador
         if (getIntent() != null && getIntent().hasExtra("isbn")) {
             isbnpasado = getIntent().getStringExtra("isbn");
@@ -67,16 +67,21 @@ public class ModificarLibroActivity extends AppCompatActivity {
                 verificarData(view);
             }
         });
-
+        trash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eliminarLibro(isbnpasado);
+            }
+        });
         if (isbnpasado != null) {
             recuperarLibro(isbnpasado);
         }else{
-            //KEVIN TOAST HERE
+            Toast.makeText(ModificarLibroActivity.this, "ERROR. No se pudo abrir el libro", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
     public void recuperarLibro(String isbnBuscado){
-        String url = "http://10.0.2.2/api_biblioteca/api/buscar_libros.php";
+        String url = getString(R.string.API_BUSCAR) ;
         // 1. Creamos el JSON con el título que queremos buscar
         JSONObject jsonBody = new JSONObject();
         try {jsonBody.put("isbn", isbnBuscado);
@@ -87,11 +92,9 @@ public class ModificarLibroActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            // Un JSON con un arreglo llamado "libros"
                             JSONArray jsonArray = response.getJSONArray("libros");
 
                             if(jsonArray.length() == 0) {
-                                // No se encontró ningún libro con ese nombre
                                 return;
                             }
                             //Solo buscamos uno agarraremos al primero
@@ -128,7 +131,7 @@ public class ModificarLibroActivity extends AppCompatActivity {
         else{alerta(error, "Error");}
     }
     public void modificarLibro(String isbn, String titulo, String autor, String editorial) {
-        String url = "http://10.0.2.2/api_biblioteca/api/modificar_libro.php";//VM RECUERDA VM ONLY
+        String url = getString(R.string.API_MODIFICAR);
         // 1. Crear el objeto JSON que enviaremos
         JSONObject jsonBody = new JSONObject();
         try {
@@ -147,9 +150,6 @@ public class ModificarLibroActivity extends AppCompatActivity {
                         try {
                             boolean exito = response.getBoolean("exito");
                             String mensaje = response.getString("mensaje");
-                            // Mostrar mensaje al usuario (ej. Toast)
-                            //Toast tosty = new Toast(v.getContext());
-                            //tosty.
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -164,9 +164,13 @@ public class ModificarLibroActivity extends AppCompatActivity {
         // 3. Añadir la petición a la cola de Volley
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
+
+        Toast.makeText(ModificarLibroActivity.this, "Cambios al libro guardados", Toast.LENGTH_SHORT).show();
+        clearFields();
+        finish();
     }
     public void eliminarLibro(String isbn){
-        String url = "http://10.0.2.2/api_biblioteca/api/eliminar_libro.php";
+        String url = getString(R.string.API_ELIMINAR);
         // 1. Crear el objeto JSON que enviaremos
         JSONObject jsonBody = new JSONObject();
         try {jsonBody.put("isbn", isbn);
@@ -179,9 +183,6 @@ public class ModificarLibroActivity extends AppCompatActivity {
                         try {
                             boolean exito = response.getBoolean("exito");
                             String mensaje = response.getString("mensaje");
-                            // Mostrar mensaje al usuario (ej. Toast)
-                            //Toast tosty = new Toast(v.getContext());
-                            //tosty.
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -195,6 +196,11 @@ public class ModificarLibroActivity extends AppCompatActivity {
         // 3. Añadir la petición a la cola de Volley
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
+
+        Toast.makeText(ModificarLibroActivity.this, "!LIBRO ELIMINIADO", Toast.LENGTH_SHORT).show();
+        clearFields();
+        finish();
+
     }
     public void alerta(String line , String titulo){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -207,6 +213,12 @@ public class ModificarLibroActivity extends AppCompatActivity {
                         //
                     }
                 }).show();
+    }
+    public void clearFields(){
+        isbn.setText("");
+        title.setText("");
+        autor.setText("");
+        editor.setText("");
     }
 
 

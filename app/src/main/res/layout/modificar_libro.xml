@@ -31,7 +31,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Modificar Libro"
+            android:text="@string/title_modificar"
             android:textColor="#F5F1EA"
             android:textSize="22sp"
             android:fontFamily="serif"

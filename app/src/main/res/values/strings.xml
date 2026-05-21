@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Moviles_ProyectoFinal_Biblioteca</string>
+    <!-- IP DE LAS APIS ESTAN PARA LA MV -->
+    <string name="API_BUSCAR">http://10.0.2.2/api_biblioteca/api/buscar_libros.php</string>
+    <string name="API_MODIFICAR">http://10.0.2.2/api_biblioteca/api/modificar_libro.php</string>
+    <string name="API_ELIMINAR">http://10.0.2.2/api_biblioteca/api/eliminar_libro.php</string>
+    <string name="API_CREAR">http://10.0.2.2/api_biblioteca/api/crear_libro.php</string>
+    <string name="title_modificar">Modificar Libro</string>
 </resources>

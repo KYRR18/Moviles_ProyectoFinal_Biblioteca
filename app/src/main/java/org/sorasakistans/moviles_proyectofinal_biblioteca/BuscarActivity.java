@@ -90,7 +90,7 @@ public class BuscarActivity extends AppCompatActivity {
         finish();
     }
     public void buscarLibroPorTitulo(String tituloBuscado) {
-        String url = "http://10.0.2.2/api_biblioteca/api/buscar_libros.php";
+        String url = getString(R.string.API_BUSCAR);
 
         listalibros.clear();
 
@@ -111,8 +111,6 @@ public class BuscarActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            // El PHP nos devuelve el mismo formato que obtener_libros.php
-                            // Un JSON con un arreglo llamado "libros"
                             JSONArray jsonArray = response.getJSONArray("libros");
 
                             for (int i = 0; i < jsonArray.length(); i++) {
