@@ -2,69 +2,54 @@ package org.sorasakistans.moviles_proyectofinal_biblioteca;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 
 public class PerfilActivity extends AppCompatActivity {
-
+    ImageView btnBackPerfil, btnMoreOptionsPerfil;
+    MaterialButton btnEditProfile, btnSettings, btnLogout;
+    ImageView navPerfil, navHome, navLista, navLupa;
+    TextView userAdr, userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 1. Cargamos el diseño XML de tu Perfil
         setContentView(R.layout.perfil);
 
-        // 2. Vinculamos la barra superior (TopBar)
-        ImageView btnBackPerfil = findViewById(R.id.btnBackPerfil);
-        ImageView btnMoreOptionsPerfil = findViewById(R.id.btnMoreOptionsPerfil);
+        btnBackPerfil = findViewById(R.id.btnBackPerfil);
+        btnMoreOptionsPerfil = findViewById(R.id.btnMoreOptionsPerfil);
 
-        // 3. Vinculamos los botones de opciones del cuerpo del perfil
-        MaterialButton btnEditProfile = findViewById(R.id.btnEditProfile);
-        MaterialButton btnSettings = findViewById(R.id.btnSettings);
-        MaterialButton btnLogout = findViewById(R.id.btnLogout);
+        btnEditProfile = findViewById(R.id.btnEditProfile);
+        btnSettings = findViewById(R.id.btnSettings);
+        btnLogout = findViewById(R.id.btnLogout);
 
-        // 4. Vinculamos los 4 iconos de la barra inferior (BottomNav)
-        ImageView navHome = findViewById(R.id.navHome);
-        ImageView navLista = findViewById(R.id.navLista);
-        ImageView navLupa = findViewById(R.id.navLupa);
-        ImageView navPerfil = findViewById(R.id.navPerfil);
+        navHome = findViewById(R.id.navHome);
+        navLista = findViewById(R.id.navLista);
+        navLupa = findViewById(R.id.navLupa);
+        navPerfil = findViewById(R.id.navPerfil);
 
-        // ================= ACCIONES DE LA BARRA SUPERIOR =================
+        userName = findViewById(R.id.tvUserName);
+        userAdr = findViewById(R.id.tvUserEmail);
 
-        // La flecha izquierda te saca de perfil y te regresa a la pantalla anterior
-        btnBackPerfil.setOnClickListener(v -> {
-            finish();
-        });
+        btnBackPerfil.setOnClickListener(this::goToHome);
 
         // ================= CIRCUITO DE NAVEGACIÓN INFERIOR =================
-
-        // 1. Viajar a la pantalla de Home
-        navHome.setOnClickListener(v -> {
-            Intent intent = new Intent(PerfilActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish(); // Cierra Perfil para liberar memoria
-        });
-
-        // 2. Viajar a la pantalla de Listas
+        navHome.setOnClickListener(this::goToHome);
         navLista.setOnClickListener(v -> {
             Intent intent = new Intent(PerfilActivity.this, ListaAdapter.class); // Verifica si se llama ListasActivity o ListaActivity
             startActivity(intent);
             finish();
         });
-
-        // 3. Viajar a la pantalla de Buscar
         navLupa.setOnClickListener(v -> {
             Intent intent = new Intent(PerfilActivity.this, BuscarActivity.class);
             startActivity(intent);
             finish();
         });
-
-        // 4. Pantalla Actual (Perfil)
-        navPerfil.setOnClickListener(v -> {
-            // Ya estás aquí, no es necesario recargar la pantalla
-        });
-
-        // ================= ACCIONES DE BOTONES EXTRAS =================
+        navPerfil.setOnClickListener(v -> {});
 
         // El botón de cerrar sesión te saca por completo y limpia el historial para ir al Login
         btnLogout.setOnClickListener(v -> {
@@ -73,5 +58,10 @@ public class PerfilActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+    }
+    public void goToHome(View v){
+        Intent intent = new Intent(PerfilActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

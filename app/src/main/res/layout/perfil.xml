@@ -39,6 +39,7 @@
             android:paddingStart="15dp"/>
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/btnMoreOptionsPerfil"
             android:layout_width="28dp"
             android:layout_height="28dp"
@@ -102,6 +103,7 @@
                 android:layout_marginBottom="32dp"/>
 
             <TextView
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Secciones de Inventario"
@@ -114,6 +116,7 @@
                 android:paddingStart="4dp"/>
 
             <androidx.cardview.widget.CardView
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -151,6 +154,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="36dp"

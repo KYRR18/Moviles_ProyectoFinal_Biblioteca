@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -30,63 +31,40 @@ public class BuscarActivity extends AppCompatActivity {
     RecyclerView rv;
     //EditText searchbar;
     BusquedaAdapter ad;
-
+    ImageView btnBack, btnPuntos;
+    EditText etBuscar;
+    ImageView navHome, navLista, navLupa, navPerfil;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Carga tu diseño XML de búsqueda
         setContentView(R.layout.buscar_libro);
+        btnBack = findViewById(R.id.btnBack);
+        btnPuntos = findViewById(R.id.btnPuntos);
+        etBuscar = findViewById(R.id.etBuscar);
 
-        // 1. Vincular componentes de la barra superior (TopBar)
-        ImageView btnBack = findViewById(R.id.btnBack);
-        ImageView btnPuntos = findViewById(R.id.btnPuntos);
-        EditText etBuscar = findViewById(R.id.etBuscar);
+        navHome = findViewById(R.id.navHome);
+        navLista = findViewById(R.id.navLista);
+        navLupa = findViewById(R.id.navLupa);
+        navPerfil = findViewById(R.id.navPerfil);
 
-        // 2. Vincular los 4 iconos de la barra inferior (BottomNav)
-        ImageView navHome = findViewById(R.id.navHome);
-        ImageView navLista = findViewById(R.id.navLista);
-        ImageView navLupa = findViewById(R.id.navLupa);
-        ImageView navPerfil = findViewById(R.id.navPerfil);
+        btnBack.setOnClickListener(this::goToHome);
+        navHome.setOnClickListener(this::goToHome);
 
-        // ================= ACCIÓN DE REGRESO =================
-        // La flecha te regresa a la pantalla anterior del historial (usualmente Home)
-        btnBack.setOnClickListener(v -> {
-            finish();
-        });
-
-        // ================= CIRCUITO DE NAVEGACIÓN ENTRE PANTALLAS =================
-
-        // 1. Ir a la pantalla de Home
-        navHome.setOnClickListener(v -> {
-            Intent intent = new Intent(BuscarActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish(); // Cierra Buscar para que no se amontone en la memoria
-        });
-
-        // 2. Ir a la pantalla de Listas
         navLista.setOnClickListener(v -> {
             Intent intent = new Intent(BuscarActivity.this, ListaAdapter.class); // Cambia por el nombre exacto si se llama diferente tu clase de Listas
             startActivity(intent);
             finish();
         });
 
-        // 3. Pantalla Actual (Buscar)
-        navLupa.setOnClickListener(v -> {
-            // Ya estás aquí. Opcional: puedes limpiar el buscador si el usuario le vuelve a picar
-            etBuscar.setText("");
-        });
+        navLupa.setOnClickListener(v -> {etBuscar.setText("");});
 
-        // 4. Ir a la pantalla de Perfil
         navPerfil.setOnClickListener(v -> {
             Intent intent = new Intent(BuscarActivity.this, PerfilActivity.class);
             startActivity(intent);
             finish();
         });
-        setContentView(R.layout.buscar_libro);
 
-        //searchbar = findViewById(R.id.etBuscar);
         rv = findViewById(R.id.rvResultadosBusqueda);
-
         rv.setLayoutManager(new LinearLayoutManager(this));
         ad = new BusquedaAdapter(listalibros);
         rv.setAdapter(ad);
@@ -106,11 +84,14 @@ public class BuscarActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
     }
-
+    public void goToHome(View v){
+        Intent intent = new Intent(BuscarActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
     public void buscarLibroPorTitulo(String tituloBuscado) {
         String url = "http://10.0.2.2/api_biblioteca/api/buscar_libros.php";
 
-        // Limpiamos la lista para mostrar solo los nuevos resultados
         listalibros.clear();
 
         if (tituloBuscado.trim().isEmpty()) {
@@ -121,8 +102,6 @@ public class BuscarActivity extends AppCompatActivity {
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("titulo", tituloBuscado);
-            // NOTA: Si prefieres buscar por ISBN, cambia la línea de arriba por:
-            // jsonBody.put("isbn", isbnBuscado);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -145,7 +124,6 @@ public class BuscarActivity extends AppCompatActivity {
                                 Libro nuevoLibro = new Libro(titulo, autor, editorial, isbn);
                                 listalibros.add(nuevoLibro);
                             }
-                            // Importante: notificar al adaptador que los datos han cambiado
                             ad.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
-        btnSignInSubmit = findViewById(R.id.btnSignInSubmit);
+        btnSignInSubmit = findViewById(R.id.btnLogInSubmit);
         tvRegister = findViewById(R.id.tvRegister);
         ivTogglePassword = findViewById(R.id.ivTogglePassword);
 
@@ -82,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, AccountActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
