@@ -40,7 +40,7 @@ public class PerfilActivity extends AppCompatActivity {
         // ================= CIRCUITO DE NAVEGACIÓN INFERIOR =================
         navHome.setOnClickListener(this::goToHome);
         navLista.setOnClickListener(v -> {
-            Intent intent = new Intent(PerfilActivity.this, ListaAdapter.class); // Verifica si se llama ListasActivity o ListaActivity
+            Intent intent = new Intent(PerfilActivity.this, ListasActivity.class); // Verifica si se llama ListasActivity o ListaActivity
             startActivity(intent);
             finish();
         });

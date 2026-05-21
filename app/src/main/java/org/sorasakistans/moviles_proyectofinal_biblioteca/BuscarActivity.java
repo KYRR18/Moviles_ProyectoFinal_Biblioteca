@@ -51,7 +51,7 @@ public class BuscarActivity extends AppCompatActivity {
         navHome.setOnClickListener(this::goToHome);
 
         navLista.setOnClickListener(v -> {
-            Intent intent = new Intent(BuscarActivity.this, ListaAdapter.class); // Cambia por el nombre exacto si se llama diferente tu clase de Listas
+            Intent intent = new Intent(BuscarActivity.this, ListasActivity.class); // Cambia por el nombre exacto si se llama diferente tu clase de Listas
             startActivity(intent);
             finish();
         });
