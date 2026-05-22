@@ -136,6 +136,9 @@ Si ves eso, ¡la API está lista! 🎉
 | `asignar_libro_estanteria.php` | `POST` | Asigna un libro a una estantería |
 | `obtener_estanterias_usuario.php` | `GET` | Obtiene las estanterías de un usuario |
 | `obtener_libros_estanteria.php` | `GET` | Obtiene los libros de una estantería |
+| `editar_estanteria.php` | `PUT` | Edita el título de una estantería |
+| `eliminar_estanteria.php` | `POST` | Elimina una estantería (y vacía sus libros) |
+| `cambiar_estanteria_libro.php` | `PUT` | Mueve un libro a otra estantería |
 
 ---
 
