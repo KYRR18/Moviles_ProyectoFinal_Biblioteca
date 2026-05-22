@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:text="Título"
                 android:textColor="@color/espresso"
-                android:textSize="20sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -57,7 +57,7 @@
                 android:layout_marginTop="2dp"
                 android:text="Autor"
                 android:textColor="@color/cocoa"
-                android:textSize="16sp" />
+                android:textSize="10sp" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

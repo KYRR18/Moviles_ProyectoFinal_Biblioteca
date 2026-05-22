@@ -152,6 +152,9 @@ public class AnadirLibroActivity extends AppCompatActivity {
                                     clearFields();
                                     finish();
                                 }
+                            }else{
+                                String errormsg =  response.getString("mensaje");
+                               Toast.makeText(AnadirLibroActivity.this,errormsg,Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -160,7 +163,19 @@ public class AnadirLibroActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
+                if (error.networkResponse != null && error.networkResponse.data != null) {
+                    try {
+                        String body = new String(error.networkResponse.data, "UTF-8");
+                        JSONObject json = new JSONObject(body);
+                        String mensaje = json.getString("mensaje");
+                        Toast.makeText(AnadirLibroActivity.this, mensaje, Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(AnadirLibroActivity.this, "Error del servidor", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(AnadirLibroActivity.this, "Error de red o conexión", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         RequestQueue requestQueue = Volley.newRequestQueue(this);
