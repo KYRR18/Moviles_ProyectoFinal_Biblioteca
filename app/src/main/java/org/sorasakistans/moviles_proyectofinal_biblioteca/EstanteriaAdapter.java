@@ -85,9 +85,7 @@ public class EstanteriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 h.tvSinLibros.setVisibility(View.GONE);
                 h.rvLibros.setVisibility(View.VISIBLE);
 
-                LibroEstanteriaAdapter libroAdapter = new LibroEstanteriaAdapter(libros, libro -> {
-                    // TODO: manejar click en libro (abrir detalle, etc.)
-                });
+                LibroEstanteriaAdapter libroAdapter = new LibroEstanteriaAdapter(libros, estanteria.getId());
                 h.rvLibros.setAdapter(libroAdapter);
             }
 

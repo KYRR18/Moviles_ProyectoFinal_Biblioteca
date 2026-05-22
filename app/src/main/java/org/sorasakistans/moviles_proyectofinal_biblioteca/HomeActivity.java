@@ -66,7 +66,7 @@ public class HomeActivity extends AppCompatActivity {
         rvEstanterias.setLayoutManager(new LinearLayoutManager(this));
         rvEstanterias.setAdapter(adapter);
 
-        recoverShelfs();
+        // Los datos ahora se cargan en onResume() para que siempre estén frescos
 
         // ── Navegación inferior ──────────────────────────────────────────────
         navHome.setOnClickListener(v -> {recoverShelfs();});
@@ -84,6 +84,18 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         btnMoreOptionsHome.setOnClickListener(v -> {});
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Esto se ejecuta cada vez que la pantalla vuelve al frente (ej. regresando de AnadirLibroActivity)
+        recoverShelfs();
+    }
+
+    // Método público para que los Adapters puedan forzar una recarga si modifican algo en BD
+    public void recargarDatos() {
+        recoverShelfs();
     }
 
     // ── Diálogo para crear nueva estantería ─────────────────────────────────
@@ -180,6 +192,8 @@ public class HomeActivity extends AppCompatActivity {
                 Request.Method.GET, url, null,
                 response -> {
                     try {
+                        listaEstanterias.clear(); // Limpiar para evitar duplicados al recargar
+                        
                         JSONArray jsonArray = response.getJSONArray("estanterias");
 
                         if (jsonArray.length() == 0) {
@@ -191,7 +205,9 @@ public class HomeActivity extends AppCompatActivity {
                             JSONObject e = jsonArray.getJSONObject(i);
                             int ids     = e.getInt("id");
                             String nombres= e.getString("titulo");
-                            listaEstanterias.add(new Estanteria(ids, nombres));
+                            Estanteria shelf = new Estanteria(ids, nombres);
+                            listaEstanterias.add(shelf);
+                            recoverBooks(shelf); // async: fills shelf.libros when response arrives
                         }
                         if (adapter != null) adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
@@ -207,6 +223,39 @@ public class HomeActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(request);
+    }
+    // Async: fetches books for a shelf and sets them directly on the Estanteria object
+    private void recoverBooks(Estanteria shelf) {
+        String url = getString(R.string.API_OBTENER_LIBROS_ESTANTERIA) + "?estanteria_id=" + shelf.getId();
 
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        if (!response.getBoolean("exito")) return; // empty shelf (404 case)
+
+                        JSONArray jsonArray = response.getJSONArray("libros");
+                        List<Libro> listaShelf = new ArrayList<>();
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject obj = jsonArray.getJSONObject(i);
+                            String jsTitle    = obj.getString("titulo");
+                            String jsAutor    = obj.getString("autor");
+                            String jsEditorial = obj.getString("editorial");
+                            String jsIsbn     = obj.getString("isbn");
+                            listaShelf.add(new Libro(jsTitle, jsAutor, jsEditorial, jsIsbn));
+                        }
+
+                        shelf.setLibros(listaShelf);
+                        if (adapter != null) adapter.notifyDataSetChanged();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> error.printStackTrace()
+        );
+
+        Volley.newRequestQueue(this).add(request);
     }
 }
