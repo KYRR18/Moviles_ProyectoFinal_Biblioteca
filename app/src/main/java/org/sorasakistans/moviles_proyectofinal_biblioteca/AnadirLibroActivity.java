@@ -143,7 +143,11 @@ public class AnadirLibroActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             boolean exito = response.getBoolean("exito");
-                            String mensaje = response.getString("mensaje");
+                            if (exito){
+                                Toast.makeText(AnadirLibroActivity.this, "¡Libro añadido con exito!", Toast.LENGTH_SHORT).show();
+                                clearFields();
+                                finish();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -151,16 +155,11 @@ public class AnadirLibroActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                // Manejar error de red o servidor (400, 500, etc.)
                 error.printStackTrace();
             }
         });
-        // 3. Añadir la petición a la cola de Volley
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
-        Toast.makeText(AnadirLibroActivity.this, "¡Libro añadido con exito!", Toast.LENGTH_SHORT).show();
-        clearFields();
-        finish();
     }
 
 

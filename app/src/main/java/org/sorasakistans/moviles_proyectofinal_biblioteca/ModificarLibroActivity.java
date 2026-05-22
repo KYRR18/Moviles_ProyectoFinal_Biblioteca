@@ -149,7 +149,11 @@ public class ModificarLibroActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             boolean exito = response.getBoolean("exito");
-                            String mensaje = response.getString("mensaje");
+                            if (exito){
+                                Toast.makeText(ModificarLibroActivity.this, "Cambios al libro guardados", Toast.LENGTH_SHORT).show();
+                                clearFields();
+                                finish();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -161,28 +165,28 @@ public class ModificarLibroActivity extends AppCompatActivity {
                 error.printStackTrace();
             }
         });
-        // 3. Añadir la petición a la cola de Volley
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
 
-        Toast.makeText(ModificarLibroActivity.this, "Cambios al libro guardados", Toast.LENGTH_SHORT).show();
-        clearFields();
-        finish();
     }
-    public void eliminarLibro(String isbn){
+    public void eliminarLibro(String isbnpasado){
         String url = getString(R.string.API_ELIMINAR);
         // 1. Crear el objeto JSON que enviaremos
         JSONObject jsonBody = new JSONObject();
-        try {jsonBody.put("isbn", isbn);
+        try {jsonBody.put("isbn", isbnpasado);
         } catch (JSONException e) {e.printStackTrace();}
         // 2. Crear la petición
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE, url, jsonBody,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             boolean exito = response.getBoolean("exito");
-                            String mensaje = response.getString("mensaje");
+                            if (exito){
+                                Toast.makeText(ModificarLibroActivity.this, "!! LIBRO ELIMINADO !!", Toast.LENGTH_SHORT).show();
+                                clearFields();
+                                finish();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -190,16 +194,13 @@ public class ModificarLibroActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Toast.makeText(ModificarLibroActivity.this, "Error al eliminar: " + error.getMessage(), Toast.LENGTH_LONG).show();
                 error.printStackTrace();
             }
         });
         // 3. Añadir la petición a la cola de Volley
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
-
-        Toast.makeText(ModificarLibroActivity.this, "!LIBRO ELIMINIADO", Toast.LENGTH_SHORT).show();
-        clearFields();
-        finish();
 
     }
     public void alerta(String line , String titulo){

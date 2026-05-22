@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,7 +58,10 @@ public class ListasActivity extends AppCompatActivity {
         });
         refreshIV.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {obtenerLibros();}
+            public void onClick(View view) {
+                obtenerLibros();
+                Toast.makeText(ListasActivity.this, "Se Refresco la lista", Toast.LENGTH_SHORT).show();
+            }
         });
         optionsIV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +73,10 @@ public class ListasActivity extends AppCompatActivity {
         });
         listIV.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {obtenerLibros();}
+            public void onClick(View view) {
+                obtenerLibros();
+                Toast.makeText(ListasActivity.this, "Se Refresco la lista", Toast.LENGTH_SHORT).show();
+            }
         });
         searchIV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +101,7 @@ public class ListasActivity extends AppCompatActivity {
         finish();
     }
     public void obtenerLibros() {
-        String url = "http://10.0.2.2/api_biblioteca/api/obtener_libros.php";
+        String url = getString(R.string.API_ALLBOOKS);
         // Creamos la petición GET. Como es GET, no enviamos cuerpo (pasamos null).
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
