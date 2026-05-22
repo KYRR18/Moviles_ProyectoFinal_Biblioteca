@@ -6,5 +6,15 @@
     <string name="API_MODIFICAR">http://10.0.2.2/api_biblioteca/api/actualizar_libro.php</string>
     <string name="API_ELIMINAR">http://10.0.2.2/api_biblioteca/api/eliminar_libro.php</string>
     <string name="API_CREAR">http://10.0.2.2/api_biblioteca/api/crear_libro.php</string>
+    <string name="API_CREAR_USUARIO">http://10.0.2.2/api_biblioteca/api/crear_usuario.php</string>
+    <string name="API_VERIFICAR_USUARIO">http://10.0.2.2/api_biblioteca/api/verificar_usuario.php</string>
+    <string name="API_CREAR_ESTANTERIA">http://10.0.2.2/api_biblioteca/api/crear_estanteria.php</string>
+    <string name="API_ASIGNAR_LIBRO_ESTANTERIA">http://10.0.2.2/api_biblioteca/api/asignar_libro_estanteria.php</string>
+    <string name="API_OBTENER_ESTANTERIAS_USUARIO">http://10.0.2.2/api_biblioteca/api/obtener_estanterias_usuario.php</string>
+    <string name="API_OBTENER_LIBROS_ESTANTERIA">http://10.0.2.2/api_biblioteca/api/obtener_libros_estanteria.php</string>
     <string name="title_modificar">Modificar Libro</string>
+    <string name="username">Username</string>
+    <string name="username_tx">Ingresa tu nombre de usuario</string>
+    <string name="password">Password</string>
+    <string name="password_tx">Ingresa tu Contraseña</string>
 </resources>

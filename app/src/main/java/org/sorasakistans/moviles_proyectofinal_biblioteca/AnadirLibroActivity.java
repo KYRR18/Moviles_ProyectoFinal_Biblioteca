@@ -136,7 +136,6 @@ public class AnadirLibroActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        // 2. Crear la petición
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                 new Response.Listener<JSONObject>() {
                     @Override
