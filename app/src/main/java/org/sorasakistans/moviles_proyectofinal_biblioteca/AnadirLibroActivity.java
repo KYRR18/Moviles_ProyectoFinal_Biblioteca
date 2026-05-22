@@ -126,13 +126,52 @@ public class AnadirLibroActivity extends AppCompatActivity {
     }
     public void crearLibro(String isbn, String titulo, String autor, String editorial) {
         String url = getString(R.string.API_CREAR);
-        // 1. Crear el objeto JSON que enviaremos
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("isbn", isbn);
             jsonBody.put("titulo", titulo);
             jsonBody.put("autor", autor);
             jsonBody.put("editorial", editorial);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            boolean exito = response.getBoolean("exito");
+                            if (exito){
+                                Toast.makeText(AnadirLibroActivity.this, "¡Libro creado con exito!", Toast.LENGTH_SHORT).show();
+                                int libroId = response.getInt("id"); // necesitas que crear_libro.php devuelva el id
+                                int estanteriaId = getIntent().getIntExtra("estanteria_id", -1);
+
+                                if (estanteriaId != -1) {
+                                    asignarLibroAEstanteria(libroId, estanteriaId); // segunda llamada Volley
+                                }else{
+                                    clearFields();
+                                    finish();
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonObjectRequest);
+    }
+    public void asignarLibroAEstanteria(int bookId, int shelfID){
+        String url = getString(R.string.API_ASIGNAR_LIBRO_ESTANTERIA);
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("estanteria_id", shelfID);
+            jsonBody.put("libro_id", bookId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -154,13 +193,13 @@ public class AnadirLibroActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Toast.makeText(AnadirLibroActivity.this, "¡ERROR al tratar de sincronizar libro y estanteria!", Toast.LENGTH_SHORT).show();
                 error.printStackTrace();
             }
         });
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
     }
-
 
     public void alerta(String line , String titulo){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
