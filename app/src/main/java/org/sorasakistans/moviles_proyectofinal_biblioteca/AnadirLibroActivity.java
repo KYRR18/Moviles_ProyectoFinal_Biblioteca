@@ -1,6 +1,7 @@
 package org.sorasakistans.moviles_proyectofinal_biblioteca;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -65,6 +66,50 @@ public class AnadirLibroActivity extends AppCompatActivity {
                 verificarData(view);
             }
         });
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AnadirLibroActivity.this, BuscarActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        ivHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        ivList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AnadirLibroActivity.this, ListasActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        ivSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AnadirLibroActivity.this, BuscarActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        ivUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AnadirLibroActivity.this, PerfilActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+    public void clearFields(){
+        isbn.setText("");
+        title.setText("");
+        autor.setText("");
+        editor.setText("");
     }
     public void verificarData(View view){
         String isb = isbn.getText().toString();
@@ -72,7 +117,7 @@ public class AnadirLibroActivity extends AppCompatActivity {
         String aut = autor.getText().toString();
         String editorial = editor.getText().toString();
         String error = "";
-        if (isb.isEmpty()){error+="ISBN vaci\n";}
+        if (isb.isEmpty()){error+="ISBN vacio\n";}
         if (titulo.isEmpty()){error+="Titulo vacio\n";}
         if (aut.isEmpty()){error+="Autor vacio\n";}
         if (editorial.isEmpty()){error+="Editorial vacio\n";}
@@ -80,7 +125,7 @@ public class AnadirLibroActivity extends AppCompatActivity {
         else{alerta(error, "Error");}
     }
     public void crearLibro(String isbn, String titulo, String autor, String editorial) {
-        String url = "http://10.0.2.2/api_biblioteca/api/crear_libro.php";//VM RECUERDA VM ONLY
+        String url = getString(R.string.API_CREAR);
         // 1. Crear el objeto JSON que enviaremos
         JSONObject jsonBody = new JSONObject();
         try {
@@ -91,17 +136,17 @@ public class AnadirLibroActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        // 2. Crear la petición
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             boolean exito = response.getBoolean("exito");
-                            String mensaje = response.getString("mensaje");
-                            // Mostrar mensaje al usuario (ej. Toast)
-                            //Toast tosty = new Toast(v.getContext());
-                            //tosty.
+                            if (exito){
+                                Toast.makeText(AnadirLibroActivity.this, "¡Libro añadido con exito!", Toast.LENGTH_SHORT).show();
+                                clearFields();
+                                finish();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -109,11 +154,9 @@ public class AnadirLibroActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                // Manejar error de red o servidor (400, 500, etc.)
                 error.printStackTrace();
             }
         });
-        // 3. Añadir la petición a la cola de Volley
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
     }

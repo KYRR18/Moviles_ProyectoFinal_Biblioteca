@@ -18,21 +18,21 @@ public class MainActivity extends AppCompatActivity {
         btnSignIn = findViewById(R.id.btnSignIn);
         btnCreateAccount = findViewById(R.id.btnCreateAccount);
 
-        // Acción al presionar "SIGN IN" -> Nos lleva al Login
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
-        // Acción al presionar "CREATE ACCOUNT" -> Nos lleva al Registro
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AccountActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

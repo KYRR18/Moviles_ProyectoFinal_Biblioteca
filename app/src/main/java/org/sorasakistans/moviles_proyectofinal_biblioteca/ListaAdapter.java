@@ -1,8 +1,10 @@
 package org.sorasakistans.moviles_proyectofinal_biblioteca;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,16 +34,26 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ViewHolderLi
         TextView titulo;
         TextView statut;//Provisionalmente Autor
         TextView valor; //Provisionalmente ID
+        ImageView icon;
         public ViewHolderLista(@NonNull View itemView) {
             super(itemView);
             titulo = itemView.findViewById(R.id.tvItemTitle);
             statut = itemView.findViewById(R.id.tvModifiedDate);
             valor = itemView.findViewById(R.id.tvStatusValue);
+            icon = itemView.findViewById(R.id.imgIconFile);
         }
         public void asignardatos(Libro book){
             titulo.setText(book.getTitulo());
             statut.setText(book.getAutor());
             valor.setText(book.getIsbn());
+            icon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(), ModificarLibroActivity.class);
+                    intent.putExtra("isbn", book.getIsbn());
+                    view.getContext().startActivity(intent);
+                }
+            });
         }
     }
 }

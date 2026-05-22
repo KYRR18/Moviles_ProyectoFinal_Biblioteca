@@ -1,12 +1,19 @@
 package org.sorasakistans.moviles_proyectofinal_biblioteca;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -20,14 +27,81 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ListasActivity extends AppCompatActivity {
-    ArrayList<Libro> listaLibros = new ArrayList<>();
+    RecyclerView rv;
+    ArrayList<Libro> listaLibros = new ArrayList<Libro>();
+    ListaAdapter ad;
+    ImageView backIV, refreshIV, optionsIV;
+    ImageView homeIV,listIV,searchIV,userIV;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+        setContentView(R.layout.listas);
+        rv = findViewById(R.id.rvFiles);
+        rv.setLayoutManager(new GridLayoutManager(this, 1));
+        ad = new ListaAdapter(listaLibros);
+        obtenerLibros();
+        rv.setAdapter(ad);
 
+        backIV = findViewById(R.id.btnBack);
+        refreshIV = findViewById(R.id.btnRefresh);
+        optionsIV = findViewById(R.id.btnMoreOptions);
+
+        homeIV = findViewById(R.id.navHome);
+        listIV = findViewById(R.id.navLista);
+        searchIV = findViewById(R.id.navBuscar);
+        userIV = findViewById(R.id.navUser);
+
+        backIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {goToHome(view);}
+        });
+        refreshIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                obtenerLibros();
+                Toast.makeText(ListasActivity.this, "Se Refresco la lista", Toast.LENGTH_SHORT).show();
+            }
+        });
+        optionsIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {goToHome(view);}
+        });
+        homeIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {goToHome(view);}
+        });
+        listIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                obtenerLibros();
+                Toast.makeText(ListasActivity.this, "Se Refresco la lista", Toast.LENGTH_SHORT).show();
+            }
+        });
+        searchIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ListasActivity.this, BuscarActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        userIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ListasActivity.this, PerfilActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+    public void goToHome(View v){
+        Intent intent = new Intent(ListasActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
     public void obtenerLibros() {
-        String url = "http://10.0.2.2/api_biblioteca/api/obtener_libros.php";
+        String url = getString(R.string.API_ALLBOOKS);
         // Creamos la petición GET. Como es GET, no enviamos cuerpo (pasamos null).
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -42,19 +116,15 @@ public class ListasActivity extends AppCompatActivity {
                                 listaLibros.clear();
                             // Recorremos el arreglo de libros uno por uno
                             for (int i = 0; i < jsonArray.length(); i++) {
-                                // Obtenemos el libro actual de la posición 'i'
                                 JSONObject libroJson = jsonArray.getJSONObject(i);
-                                // Extraemos cada campo
                                 String isbn = libroJson.getString("isbn");
                                 String titulo = libroJson.getString("titulo");
                                 String autor = libroJson.getString("autor");
                                 String editorial = libroJson.getString("editorial");
                                 // Creamos nuestro objeto Java y lo añadimos a nuestra lista
-                                Libro nuevoLibro = new Libro(titulo, autor, editorial, isbn);
-                                listaLibros.add(nuevoLibro);
+                                listaLibros.add(new Libro(titulo, autor, editorial, isbn));
                             }
-                            // Al terminar de cargar, avisamos a nuestro RecyclerView/ListView que se actualice
-                            // miAdapter.notifyDataSetChanged();
+                            if (ad != null) ad.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();
                             // Hubo un error procesando el JSON

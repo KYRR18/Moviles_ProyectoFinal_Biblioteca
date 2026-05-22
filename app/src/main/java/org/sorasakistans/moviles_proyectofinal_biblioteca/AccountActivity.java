@@ -14,6 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class AccountActivity extends AppCompatActivity {
 
     private EditText etName, etEmail, etPassword;
@@ -77,13 +87,7 @@ public class AccountActivity extends AppCompatActivity {
                     etPassword.requestFocus();
                     return;
                 }
-
-                Toast.makeText(AccountActivity.this, "¡Cuenta creada con éxito!", Toast.LENGTH_SHORT).show();
-
-                // Redirigir al Login y cerrar esta pantalla
-                Intent intent = new Intent(AccountActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                crearUsuario(name,email,password);
             }
         });
 
@@ -97,4 +101,43 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void crearUsuario(String name, String email, String password){
+        String url = getString(R.string.API_CREAR_USUARIO);
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("username", name);
+            jsonBody.put("password", password);
+            jsonBody.put("email", email);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            boolean exito = response.getBoolean("exito");
+                            if (exito){
+                                Toast.makeText(AccountActivity.this, "¡Cuenta creada con éxito!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(AccountActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(AccountActivity.this, "ERROR NO SE PUDO CREAR LA CUENTA", Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonObjectRequest);
+
+    }
+
 }
