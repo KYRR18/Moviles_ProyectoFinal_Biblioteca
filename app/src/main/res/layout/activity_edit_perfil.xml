@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditPerfil">
+
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="0sp"
+        android:layout_height="70sp"
+        android:background="#7D5A44"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:src="@drawable/flecha_left"
+            app:tint="#F5F1EA"/>
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Editar Perfil"
+            android:textColor="#F5F1EA"
+            android:textSize="28sp"
+            android:fontFamily="serif"
+            android:paddingStart="15sp"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="0sp"
+        android:layout_height="0sp"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24sp"
+            android:gravity="center_horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="50dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#D7C9B8">
+
+                <ImageView
+                    android:id="@+id/imgUserProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:padding="20dp"
+                    android:src="@drawable/perfil"
+                    app:tint="#4A342A" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tvUserEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="usuario@correo.com"
+                android:textSize="24sp"
+                android:textColor="#7D5A44"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="32dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="USERNAME"
+                android:layout_marginBottom="16sp"
+                app:boxStrokeColor="#7D5A44"
+                app:hintTextColor="#7D5A44"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#4A342A"
+                    android:inputType="textCapSentences" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <FrameLayout
+                android:id="@+id/passwordContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_input_rounded"
+                app:layout_constraintTop_toBottomOf="@id/tvPasswordLabel">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="PASSWORD"
+                    android:layout_marginBottom="16sp"
+                    app:boxStrokeColor="#7D5A44"
+                    app:hintTextColor="#7D5A44"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etUserPw"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#4A342A"
+                        android:inputType="textPersonName" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/ivTogglePassword"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="16dp"
+                    android:src="@android:drawable/ic_menu_view"
+                    app:tint="#7D5A44" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCancelEP"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0sp"
+                    android:layout_height="55sp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8sp"
+                    android:text="Cancel"
+                    android:textColor="#7D5A44"
+                    android:textAllCaps="false"
+                    app:strokeColor="#B2967D"
+                    app:cornerRadius="12sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnConfirmEP"
+                    android:layout_width="0sp"
+                    android:layout_height="55sp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8sp"
+                    android:text="Confirmar"
+                    android:backgroundTint="#4A342A"
+                    android:textColor="#F5F1EA"
+                    android:textAllCaps="false"
+                    app:cornerRadius="12sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:background="#7D5A44"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <ImageView android:id="@+id/navHome" android:layout_width="34dp" android:layout_height="34dp"
+            android:layout_marginHorizontal="24dp" android:src="@drawable/home" app:tint="#D7C9B8"/>
+        <ImageView android:id="@+id/navLista" android:layout_width="34dp" android:layout_height="34dp"
+            android:layout_marginHorizontal="24dp" android:src="@drawable/lista" app:tint="#D7C9B8"/>
+        <ImageView android:id="@+id/navLupa" android:layout_width="34dp" android:layout_height="34dp"
+            android:layout_marginHorizontal="24dp" android:src="@drawable/lupa" app:tint="#D7C9B8"/>
+        <ImageView android:id="@+id/navPerfil" android:layout_width="34dp" android:layout_height="34dp"
+            android:layout_marginHorizontal="24dp" android:src="@drawable/perfil" app:tint="#F5F1EA"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

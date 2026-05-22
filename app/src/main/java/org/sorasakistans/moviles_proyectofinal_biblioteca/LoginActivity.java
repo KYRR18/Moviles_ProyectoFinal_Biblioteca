@@ -1,6 +1,7 @@
 package org.sorasakistans.moviles_proyectofinal_biblioteca;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
@@ -109,6 +110,17 @@ public class LoginActivity extends AppCompatActivity {
                         try {
                             boolean exito = response.getBoolean("exito");
                             if (exito){
+                                JSONObject usuario = response.getJSONObject("usuario");
+                                int userId = usuario.getInt("id");
+                                String username = usuario.getString("username");
+                                String email = usuario.getString("email");
+                                SharedPreferences prefs = getSharedPreferences("sesion_usuario", MODE_PRIVATE);
+                                prefs.edit()
+                                        .putInt("usuario_id", userId)
+                                        .putString("username", username)
+                                        .putString("email", email)
+                                        .apply();
+
                                 Toast.makeText(LoginActivity.this, "¡Validación exitosa! Entrando...", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                 startActivity(intent);
